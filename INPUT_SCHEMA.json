@@ -18,13 +18,33 @@
       ],
       "items": {
         "type": "object",
+        "title": "Search",
         "properties": {
-          "query": { "type": "string" },
-          "location": { "type": "string" },
-          "fromDays": { "type": "integer", "minimum": 0, "default": 1 },
-          "maxResults": { "type": "integer", "minimum": 1, "maximum": 200, "default": 50 }
+          "query": {
+            "title": "Query",
+            "type": "string"
+          },
+          "location": {
+            "title": "Location",
+            "type": "string"
+          },
+          "fromDays": {
+            "title": "Posted within days",
+            "type": "integer",
+            "minimum": 0,
+            "default": 1
+          },
+          "maxResults": {
+            "title": "Max results",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200,
+            "default": 50
+          }
         },
-        "required": ["query"]
+        "required": [
+          "query"
+        ]
       }
     },
     "maxConcurrency": {
@@ -45,5 +65,7 @@
       "description": "Optional proxy URL. Example: http://auto:PROXY_PASSWORD@proxy.apify.com:8000"
     }
   },
-  "required": ["searches"]
+  "required": [
+    "searches"
+  ]
 }

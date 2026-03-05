@@ -1,6 +1,12 @@
 # Indeed Jobs + Company Website Actor
 
-This actor scrapes Indeed search results (US) and outputs raw job records while appending:
+This project follows Apify Actor definition conventions:
+
+- `.actor/actor.json` for actor metadata and build settings
+- `.actor/input_schema.json` for input definition
+- Apify SDK interface via `Actor.main`, `Actor.getInput`, `Actor.pushData`, and `Actor.setValue`
+
+The actor scrapes Indeed search results (US) and outputs raw job records while appending:
 
 - `companyInfo.name`
 - `companyInfo.websiteUrl`
@@ -11,7 +17,7 @@ If website extraction fails, `websiteUrl` is set to `null` and a warning is adde
 
 ## Input
 
-See `INPUT_SCHEMA.json`.
+See `.actor/input_schema.json`.
 
 Minimal example:
 

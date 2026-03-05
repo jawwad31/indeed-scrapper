@@ -1,0 +1,14 @@
+{
+  "actorSpecification": 1,
+  "name": "indeed-company-website-v1",
+  "title": "Indeed Jobs + Company Website",
+  "description": "Scrapes Indeed jobs and appends companyInfo with website URL from company pages.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "nodejs-start"
+  },
+  "input": "./input_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

@@ -19,27 +19,32 @@
       "items": {
         "type": "object",
         "title": "Search",
+        "description": "Single Indeed search configuration",
         "properties": {
           "query": {
             "title": "Query",
-            "type": "string"
+            "type": "string",
+            "description": "Indeed query string, including optional include/exclude terms"
           },
           "location": {
             "title": "Location",
-            "type": "string"
+            "type": "string",
+            "description": "Location text for Indeed search"
           },
           "fromDays": {
             "title": "Posted within days",
             "type": "integer",
             "minimum": 0,
-            "default": 1
+            "default": 1,
+            "description": "Only include jobs posted within this many days"
           },
           "maxResults": {
             "title": "Max results",
             "type": "integer",
             "minimum": 1,
             "maximum": 200,
-            "default": 50
+            "default": 50,
+            "description": "Maximum number of jobs to collect for this search"
           }
         },
         "required": [
@@ -52,12 +57,14 @@
       "type": "integer",
       "minimum": 1,
       "maximum": 20,
-      "default": 5
+      "default": 5,
+      "description": "Concurrent fetches for company page enrichment"
     },
     "includeCompanyInfo": {
       "title": "Include company info",
       "type": "boolean",
-      "default": true
+      "default": true,
+      "description": "Whether to append companyInfo fields to each job"
     },
     "proxyUrl": {
       "title": "Proxy URL",

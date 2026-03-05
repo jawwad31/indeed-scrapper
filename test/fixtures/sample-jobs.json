@@ -1,0 +1,28 @@
+[
+  {
+    "id": "3e61ce168b692fc0",
+    "company": "Boise Cascade Company",
+    "truncatedCompany": "Boise Cascade Company",
+    "companyOverviewLink": "https://www.indeed.com/cmp/Boise-Cascade?campaignid=mobvjcmp&from=mobviewjob&fromjk=3e61ce168b692fc0",
+    "title": "Seasonal Production Associate",
+    "formattedLocation": "Elgin, OR 97827",
+    "salarySnippet": {
+      "currency": "USD",
+      "text": "$23.98 an hour"
+    },
+    "jobDescription": "This is a seasonal/temporary position to provide vacation relief."
+  },
+  {
+    "id": "0cc5a5327c04ab92",
+    "company": "AprilAire",
+    "truncatedCompany": "AprilAire",
+    "companyOverviewLink": "https://www.indeed.com/cmp/Aprilaire,-Division-of-Research-Products-Corporation?campaignid=mobvjcmp&from=mobviewjob&fromjk=0cc5a5327c04ab92",
+    "title": "Summer Only - Assemblers (Temporary Full-Time)",
+    "formattedLocation": "Poynette, WI 53955",
+    "salarySnippet": {
+      "currency": "USD",
+      "text": "$14.60 - $29.00 an hour"
+    },
+    "jobDescription": "Aprilaire is an industry leading provider of healthy air solutions."
+  }
+]

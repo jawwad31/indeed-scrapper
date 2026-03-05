@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+apify_storage/key_value_stores/default/OUTPUT*.json
+apify_storage/key_value_stores/default/RUN_META*.json
+apify_storage/datasets/default/*.json
+!apify_storage/key_value_stores/default/INPUT.json

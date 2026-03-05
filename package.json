@@ -1,0 +1,16 @@
+{
+  "name": "indeed-scrapper-actor",
+  "version": "1.0.0",
+  "description": "Apify Actor that scrapes Indeed jobs and appends company website information.",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "apify",
+    "indeed",
+    "scraper"
+  ],
+  "license": "MIT"
+}

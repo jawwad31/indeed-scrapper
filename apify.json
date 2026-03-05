@@ -1,0 +1,7 @@
+{
+  "actorSpecification": 1,
+  "name": "indeed-company-website-enricher",
+  "title": "Indeed Jobs + Company Website",
+  "description": "Scrapes Indeed job results and appends company website data.",
+  "version": "0.1"
+}

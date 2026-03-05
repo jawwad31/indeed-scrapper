@@ -1,0 +1,44 @@
+{
+  "title": "Indeed Jobs Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "searches": {
+      "title": "Searches",
+      "type": "array",
+      "description": "Array of Indeed searches to run",
+      "editor": "json",
+      "prefill": [
+        {
+          "query": "production operator",
+          "location": "united states",
+          "fromDays": 1,
+          "maxResults": 20
+        }
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "query": { "type": "string" },
+          "location": { "type": "string" },
+          "fromDays": { "type": "integer", "minimum": 0, "default": 1 },
+          "maxResults": { "type": "integer", "minimum": 1, "maximum": 200, "default": 50 }
+        },
+        "required": ["query"]
+      }
+    },
+    "maxConcurrency": {
+      "title": "Max concurrency",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 5
+    },
+    "includeCompanyInfo": {
+      "title": "Include company info",
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": ["searches"]
+}

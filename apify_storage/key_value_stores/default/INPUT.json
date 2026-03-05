@@ -1,0 +1,12 @@
+{
+  "searches": [
+    {
+      "query": "production operator",
+      "location": "united states",
+      "fromDays": 1,
+      "maxResults": 20
+    }
+  ],
+  "maxConcurrency": 5,
+  "includeCompanyInfo": true
+}

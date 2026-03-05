@@ -1,4 +1,5 @@
 const { clamp, pickDefined, sleep } = require('./utils');
+const { formatFetchError } = require('./http');
 
 const INDEED_SEARCH_URL = 'https://www.indeed.com/jobs';
 const DEFAULT_MAX_RESULTS = 50;
@@ -13,6 +14,22 @@ function defaultHeaders() {
 }
 
 function buildSearchUrl(search, start = 0) {
+    if (search.url) {
+        const parsed = new URL(search.url, INDEED_SEARCH_URL);
+
+        if (!parsed.searchParams.get('fromage') && Number.isFinite(search.fromDays)) {
+            parsed.searchParams.set('fromage', String(search.fromDays));
+        }
+
+        if (start > 0) {
+            parsed.searchParams.set('start', String(start));
+        } else {
+            parsed.searchParams.delete('start');
+        }
+
+        return parsed.toString();
+    }
+
     const query = new URLSearchParams(
         pickDefined({
             q: search.query,
@@ -222,7 +239,7 @@ async function scrapeIndeedJobs(input, warnings = [], options = {}) {
                 warnings.push({
                     type: 'search_page_fetch_failed',
                     url,
-                    message: String(error.message || error),
+                    message: formatFetchError(error),
                 });
                 break;
             }
@@ -262,5 +279,3 @@ module.exports = {
     parseJobsFromHtml,
     scrapeIndeedJobs,
 };
-
-

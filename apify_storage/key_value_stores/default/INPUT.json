@@ -7,7 +7,12 @@
       "maxResults": 20
     }
   ],
+  "searchUrls": [],
   "maxConcurrency": 5,
   "includeCompanyInfo": true,
+  "useApifyProxy": true,
+  "proxyGroups": [
+    "BUYPROXIES94952"
+  ],
   "proxyUrl": ""
 }

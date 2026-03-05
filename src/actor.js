@@ -2,31 +2,81 @@ const { scrapeIndeedJobs } = require('./indeed');
 const { enrichJobsWithCompanyInfo } = require('./company');
 const { createFetchFn } = require('./http');
 
-function validateInput(input) {
+function normalizeSearches(input) {
+    const searches = [];
+
+    if (Array.isArray(input.searches)) {
+        for (const search of input.searches) {
+            if (search && typeof search === 'object') {
+                searches.push(search);
+            }
+        }
+    }
+
+    if (Array.isArray(input.searchUrls)) {
+        for (const item of input.searchUrls) {
+            if (typeof item === 'string' && item.trim()) {
+                searches.push({ url: item.trim() });
+            } else if (item && typeof item === 'object' && typeof item.url === 'string' && item.url.trim()) {
+                searches.push({
+                    url: item.url.trim(),
+                    maxResults: item.maxResults,
+                });
+            }
+        }
+    }
+
+    return searches;
+}
+
+function validateInput(input, searches) {
     if (!input || typeof input !== 'object') {
         throw new Error('Input must be a JSON object.');
     }
 
-    if (!Array.isArray(input.searches) || input.searches.length === 0) {
-        throw new Error('Input.searches must be a non-empty array.');
+    if (!Array.isArray(searches) || searches.length === 0) {
+        throw new Error('Provide at least one search in input.searches or input.searchUrls.');
     }
 
-    for (const [index, search] of input.searches.entries()) {
-        if (!search || typeof search !== 'object' || !search.query) {
-            throw new Error(`Input.searches[${index}] is missing required field: query`);
+    for (const [index, search] of searches.entries()) {
+        const hasQuery = typeof search.query === 'string' && search.query.trim().length > 0;
+        const hasUrl = typeof search.url === 'string' && search.url.trim().length > 0;
+        if (!hasQuery && !hasUrl) {
+            throw new Error(`Search at index ${index} must include either query or url.`);
         }
     }
+}
+
+async function resolveProxyConfiguration(Actor, input) {
+    const useApifyProxy = input.useApifyProxy !== false;
+    if (!useApifyProxy) return null;
+
+    const groups = Array.isArray(input.proxyGroups) && input.proxyGroups.length > 0
+        ? input.proxyGroups
+        : undefined;
+
+    return Actor.createProxyConfiguration({ groups });
 }
 
 async function runActor(Actor) {
     const warnings = [];
 
     const input = await Actor.getInput();
-    validateInput(input);
+    const normalizedSearches = normalizeSearches(input || {});
+    validateInput(input, normalizedSearches);
 
-    const fetchFn = createFetchFn(input.proxyUrl);
+    const proxyConfiguration = await resolveProxyConfiguration(Actor, input);
 
-    const scrapedJobs = await scrapeIndeedJobs(input, warnings, { fetchFn });
+    const fetchFn = createFetchFn({
+        proxyConfiguration,
+        proxyUrl: input.proxyUrl,
+    });
+
+    const scrapedJobs = await scrapeIndeedJobs(
+        { ...input, searches: normalizedSearches },
+        warnings,
+        { fetchFn },
+    );
 
     const includeCompanyInfo = input.includeCompanyInfo !== false;
     const enrichment = includeCompanyInfo
@@ -43,12 +93,17 @@ async function runActor(Actor) {
 
     await Actor.setValue('RUN_META', {
         processedAt: new Date().toISOString(),
-        inputSearchCount: input.searches.length,
+        inputSearchCount: normalizedSearches.length,
         scrapedJobs: scrapedJobs.length,
         outputJobs: enrichment.jobs.length,
         uniqueCompanyOverviewLinks: enrichment.companyCache.size,
         warningCount: warnings.length,
         warnings,
+        proxy: {
+            useApifyProxy: input.useApifyProxy !== false,
+            proxyGroups: input.proxyGroups || [],
+            usedRawProxyUrl: Boolean(input.proxyUrl),
+        },
     });
 }
 

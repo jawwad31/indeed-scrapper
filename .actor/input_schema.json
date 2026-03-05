@@ -1,77 +1,98 @@
 {
-    "title":  "Indeed Jobs Input",
-    "type":  "object",
-    "schemaVersion":  1,
-    "properties":  {
-                       "searches":  {
-                                        "title":  "Searches",
-                                        "type":  "array",
-                                        "description":  "Array of Indeed searches to run",
-                                        "editor":  "json",
-                                        "prefill":  [
-                                                        {
-                                                            "query":  "production operator",
-                                                            "location":  "united states",
-                                                            "fromDays":  1,
-                                                            "maxResults":  20
-                                                        }
-                                                    ],
-                                        "items":  {
-                                                      "type":  "object",
-                                                      "properties":  {
-                                                                         "query":  {
-                                                                                       "title":  "Query",
-                                                                                       "type":  "string",
-                                                                                       "description":  "Indeed query string, including optional include/exclude terms"
-                                                                                   },
-                                                                         "location":  {
-                                                                                          "title":  "Location",
-                                                                                          "type":  "string",
-                                                                                          "description":  "Location text for Indeed search"
-                                                                                      },
-                                                                         "fromDays":  {
-                                                                                          "title":  "Posted within days",
-                                                                                          "type":  "integer",
-                                                                                          "minimum":  0,
-                                                                                          "default":  1,
-                                                                                          "description":  "Only include jobs posted within this many days"
-                                                                                      },
-                                                                         "maxResults":  {
-                                                                                            "title":  "Max results",
-                                                                                            "type":  "integer",
-                                                                                            "minimum":  1,
-                                                                                            "maximum":  200,
-                                                                                            "default":  50,
-                                                                                            "description":  "Maximum number of jobs to collect for this search"
-                                                                                        }
-                                                                     },
-                                                      "required":  [
-                                                                       "query"
-                                                                   ]
-                                                  }
-                                    },
-                       "maxConcurrency":  {
-                                              "title":  "Max concurrency",
-                                              "type":  "integer",
-                                              "minimum":  1,
-                                              "maximum":  20,
-                                              "default":  5,
-                                              "description":  "Concurrent fetches for company page enrichment"
-                                          },
-                       "includeCompanyInfo":  {
-                                                  "title":  "Include company info",
-                                                  "type":  "boolean",
-                                                  "default":  true,
-                                                  "description":  "Whether to append companyInfo fields to each job"
-                                              },
-                       "proxyUrl":  {
-                                        "title":  "Proxy URL",
-                                        "type":  "string",
-                                        "description":  "Optional proxy URL. Example: http://auto:PROXY_PASSWORD@proxy.apify.com:8000",
-                                        "editor":  "textfield"
-                                    }
-                   },
-    "required":  [
-                     "searches"
-                 ]
+  "title": "Indeed Jobs Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "searches": {
+      "title": "Searches",
+      "type": "array",
+      "description": "Structured Indeed searches by query/location",
+      "editor": "json",
+      "prefill": [
+        {
+          "query": "production operator",
+          "location": "united states",
+          "fromDays": 1,
+          "maxResults": 20
+        }
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "title": "Query",
+            "type": "string",
+            "description": "Indeed query string, including optional include/exclude terms"
+          },
+          "location": {
+            "title": "Location",
+            "type": "string",
+            "description": "Location text for Indeed search"
+          },
+          "fromDays": {
+            "title": "Posted within days",
+            "type": "integer",
+            "minimum": 0,
+            "default": 1,
+            "description": "Only include jobs posted within this many days"
+          },
+          "maxResults": {
+            "title": "Max results",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200,
+            "default": 50,
+            "description": "Maximum number of jobs to collect for this search"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    "searchUrls": {
+      "title": "Search URLs",
+      "type": "array",
+      "description": "Indeed search result URLs copied from your browser",
+      "editor": "json",
+      "prefill": [
+        "https://www.indeed.com/jobs?q=production+operator&l=united+states&fromage=1"
+      ]
+    },
+    "maxConcurrency": {
+      "title": "Max concurrency",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 5,
+      "description": "Concurrent fetches for company page enrichment"
+    },
+    "includeCompanyInfo": {
+      "title": "Include company info",
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to append companyInfo fields to each job"
+    },
+    "useApifyProxy": {
+      "title": "Use Apify Proxy",
+      "type": "boolean",
+      "default": true,
+      "description": "Use Apify-managed proxy rotation"
+    },
+    "proxyGroups": {
+      "title": "Proxy groups",
+      "type": "array",
+      "description": "Optional Apify proxy groups (example: BUYPROXIES94952)",
+      "editor": "json",
+      "prefill": [
+        "BUYPROXIES94952"
+      ]
+    },
+    "proxyUrl": {
+      "title": "Proxy URL",
+      "type": "string",
+      "description": "Optional raw proxy URL fallback. Usually leave empty when useApifyProxy=true",
+      "editor": "textfield"
+    }
+  }
 }

@@ -17,21 +17,19 @@ If website extraction fails, `websiteUrl` is set to `null` and a warning is adde
 
 ## Input
 
-See `.actor/input_schema.json`.
+Use either `searches` (query/location) or `searchUrls` (copied Indeed search URLs).
 
-Minimal example:
+Example using search URLs:
 
 ```json
 {
-  "searches": [
-    {
-      "query": "production operator",
-      "location": "united states",
-      "fromDays": 1,
-      "maxResults": 20
-    }
+  "searchUrls": [
+    "https://www.indeed.com/jobs?q=production+operator&l=united+states&fromage=1"
   ],
-  "proxyUrl": "http://auto:PROXY_PASSWORD@proxy.apify.com:8000"
+  "maxConcurrency": 5,
+  "includeCompanyInfo": true,
+  "useApifyProxy": true,
+  "proxyGroups": ["BUYPROXIES94952"]
 }
 ```
 

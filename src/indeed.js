@@ -181,12 +181,12 @@ function parseJobsFromHtml(html) {
     return unique;
 }
 
-async function fetchText(url, { retries = 2, retryMs = 600 } = {}) {
+async function fetchText(url, fetchFn, { retries = 2, retryMs = 600 } = {}) {
     let lastError;
 
     for (let attempt = 0; attempt <= retries; attempt += 1) {
         try {
-            const response = await fetch(url, { headers: defaultHeaders() });
+            const response = await fetchFn(url, { headers: defaultHeaders() });
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}`);
             }
@@ -202,8 +202,9 @@ async function fetchText(url, { retries = 2, retryMs = 600 } = {}) {
     throw lastError;
 }
 
-async function scrapeIndeedJobs(input, warnings = []) {
+async function scrapeIndeedJobs(input, warnings = [], options = {}) {
     const allJobs = [];
+    const fetchFn = options.fetchFn || fetch;
     const seenIds = new Set();
 
     for (const search of input.searches || []) {
@@ -216,7 +217,7 @@ async function scrapeIndeedJobs(input, warnings = []) {
             let html;
 
             try {
-                html = await fetchText(url);
+                html = await fetchText(url, fetchFn);
             } catch (error) {
                 warnings.push({
                     type: 'search_page_fetch_failed',
@@ -261,3 +262,5 @@ module.exports = {
     parseJobsFromHtml,
     scrapeIndeedJobs,
 };
+
+

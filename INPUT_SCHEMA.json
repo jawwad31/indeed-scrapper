@@ -38,6 +38,11 @@
       "title": "Include company info",
       "type": "boolean",
       "default": true
+    },
+    "proxyUrl": {
+      "title": "Proxy URL",
+      "type": "string",
+      "description": "Optional proxy URL. Example: http://auto:PROXY_PASSWORD@proxy.apify.com:8000"
     }
   },
   "required": ["searches"]

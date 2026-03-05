@@ -1,6 +1,7 @@
 const { createStorage } = require('./storage');
 const { scrapeIndeedJobs } = require('./indeed');
 const { enrichJobsWithCompanyInfo } = require('./company');
+const { createFetchFn } = require('./http');
 
 function validateInput(input) {
     if (!input || typeof input !== 'object') {
@@ -26,13 +27,16 @@ async function runActor() {
         const input = await storage.getInput();
         validateInput(input);
 
-        const scrapedJobs = await scrapeIndeedJobs(input, warnings);
+        const fetchFn = createFetchFn(input.proxyUrl);
+
+        const scrapedJobs = await scrapeIndeedJobs(input, warnings, { fetchFn });
 
         const includeCompanyInfo = input.includeCompanyInfo !== false;
         const enrichment = includeCompanyInfo
             ? await enrichJobsWithCompanyInfo(scrapedJobs, {
                 warnings,
                 maxConcurrency: input.maxConcurrency || 5,
+                fetchFn,
             })
             : { jobs: scrapedJobs, companyCache: new Map() };
 

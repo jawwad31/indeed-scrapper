@@ -8,5 +8,6 @@
     }
   ],
   "maxConcurrency": 5,
-  "includeCompanyInfo": true
+  "includeCompanyInfo": true,
+  "proxyUrl": ""
 }

@@ -24,7 +24,8 @@ Minimal example:
       "fromDays": 1,
       "maxResults": 20
     }
-  ]
+  ],
+  "proxyUrl": "http://auto:PROXY_PASSWORD@proxy.apify.com:8000"
 }
 ```
 

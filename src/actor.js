@@ -3,17 +3,9 @@ const { enrichJobsWithCompanyInfo } = require('./company');
 const { createFetchFn } = require('./http');
 
 function normalizeSearches(input) {
-    const searches = [];
+    if (Array.isArray(input.searchUrls) && input.searchUrls.length > 0) {
+        const searches = [];
 
-    if (Array.isArray(input.searches)) {
-        for (const search of input.searches) {
-            if (search && typeof search === 'object') {
-                searches.push(search);
-            }
-        }
-    }
-
-    if (Array.isArray(input.searchUrls)) {
         for (const item of input.searchUrls) {
             if (typeof item === 'string' && item.trim()) {
                 searches.push({ url: item.trim() });
@@ -22,6 +14,18 @@ function normalizeSearches(input) {
                     url: item.url.trim(),
                     maxResults: item.maxResults,
                 });
+            }
+        }
+
+        return searches;
+    }
+
+    const searches = [];
+
+    if (Array.isArray(input.searches)) {
+        for (const search of input.searches) {
+            if (search && typeof search === 'object') {
+                searches.push(search);
             }
         }
     }

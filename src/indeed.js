@@ -5,21 +5,33 @@ const INDEED_SEARCH_URL = 'https://www.indeed.com/jobs';
 const DEFAULT_MAX_RESULTS = 50;
 const ABSOLUTE_MAX_RESULTS = 200;
 const PAGE_SIZE = 10;
+const SEARCH_URL_PARAMS_TO_KEEP = new Set(['q', 'l', 'fromage', 'start']);
 
 function defaultHeaders() {
     return {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
         'accept-language': 'en-US,en;q=0.9',
     };
 }
 
+function sanitizeIndeedSearchUrl(rawUrl, search) {
+    const parsed = new URL(rawUrl, INDEED_SEARCH_URL);
+
+    for (const key of [...parsed.searchParams.keys()]) {
+        if (!SEARCH_URL_PARAMS_TO_KEEP.has(key)) {
+            parsed.searchParams.delete(key);
+        }
+    }
+
+    if (!parsed.searchParams.get('fromage') && Number.isFinite(search.fromDays)) {
+        parsed.searchParams.set('fromage', String(search.fromDays));
+    }
+
+    return parsed;
+}
+
 function buildSearchUrl(search, start = 0) {
     if (search.url) {
-        const parsed = new URL(search.url, INDEED_SEARCH_URL);
-
-        if (!parsed.searchParams.get('fromage') && Number.isFinite(search.fromDays)) {
-            parsed.searchParams.set('fromage', String(search.fromDays));
-        }
+        const parsed = sanitizeIndeedSearchUrl(search.url, search);
 
         if (start > 0) {
             parsed.searchParams.set('start', String(start));
